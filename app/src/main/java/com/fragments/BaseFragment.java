@@ -40,6 +40,7 @@ public class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e(TAG, "onCreate(): " + getClass().getSimpleName());
+        // Test changes to merge it with branch1
     }
 
     @Nullable

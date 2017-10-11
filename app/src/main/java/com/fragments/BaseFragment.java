@@ -41,6 +41,7 @@ public class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.e(TAG, "onCreate(): " + getClass().getSimpleName());
         // Test changes to merge it with branch1
+        // Test changes2 to merge it with branch1
     }
 
     @Nullable

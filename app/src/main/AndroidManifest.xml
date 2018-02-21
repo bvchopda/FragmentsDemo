@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- This permissions are neccessary for broadcast receiver -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:name="com.application.MyApplication"
         android:allowBackup="true"
@@ -26,18 +27,46 @@
         <!-- Broadcast receiver declaration in manifest file and make sure to enable it -->
         <receiver
             android:name="com.utils.InternetConnectorReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
 
                 <!-- Intent filters for broadcast receiver -->
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
             </intent-filter>
         </receiver>
         <activity android:name=".TestUndoPaintActivity">
-
         </activity>
+
+        <!--Kotlin Activities-->
+        <activity android:name="com.kotlin.android.activities.KotlinActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+        <activity android:name="com.kotlin.android.activities.OperationActivity"/>
+
+        <!--Training Stuff-->
+        <activity
+            android:name="com.training.kotlin.KotlinTrainingActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name="com.training.kotlin.part1.activities.Training1BasicActivity"
+            android:exported="true"/>
+        <activity
+            android:name="com.training.kotlin.part1.activities.Training1BasicSolutionActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name="com.training.kotlin.part2.activities.Training2BasicActivity"
+            android:exported="true"/>
+        <activity
+            android:name="com.training.kotlin.part2.activities.Training2BasicSolutionActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

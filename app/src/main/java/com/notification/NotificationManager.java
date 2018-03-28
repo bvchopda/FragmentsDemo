@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
+import com.example.bvchopda.fragmentsdemo.MainActivity;
 import com.example.bvchopda.fragmentsdemo.R;
 
 import java.util.Calendar;
@@ -31,31 +33,30 @@ public class NotificationManager {
 
     private boolean isNeedToSetAlarm() {
         Intent intent = new Intent(context, Alarm.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+        Log.e(TAG, "isNeedToSetAlarm:" + (pendingIntent == null));
         return pendingIntent == null;
     }
 
     void setAlarm() {
         if (isNeedToSetAlarm()) {
-            AppLog.e(TAG, "isNeedToSetAlarm:" + true);
             Intent intent = new Intent(context, Alarm.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.MINUTE, 1);
+            calendar.add(Calendar.SECOND, 10);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             assert alarmManager != null;
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60, pendingIntent);
-        } else
-            AppLog.e(TAG, "isNeedToSetAlarm:" + false);
+            Log.e(TAG, "Setting alarm...");
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), DAYS_IN_MILLISECONDS, pendingIntent);
+        }
     }
 
     void showNotification() {
         if (isNeedToShowNotification()) {
-            Intent intent = new Intent(context, SplashActivity.class);
+            Intent intent = new Intent(context, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                     PendingIntent.FLAG_ONE_SHOT);
@@ -66,7 +67,8 @@ public class NotificationManager {
                     new NotificationCompat.Builder(context, channelId)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(context.getString(R.string.app_name))
-                            .setContentText("Hey we missed your drawing. Let's draw.")
+                            .setContentText("Hey you haven't draw since long. Let's draw and " +
+                                    "show your skills to others.")
                             .setAutoCancel(true)
                             .setSound(defaultSoundUri)
                             .setContentIntent(pendingIntent);
@@ -83,21 +85,24 @@ public class NotificationManager {
 //        }
 
             assert notificationManager != null;
+            Log.e(TAG, "Showing Notification...");
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
         }
     }
 
     private final String LAST_OPENED = "LAST_OPENED";
-    private final long MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
-//    private final long DAYS_IN_MILLISECONDS = 2 * 24 * 60 * 60 * 1000;
+//    private final long MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
+    private final long DAYS_IN_MILLISECONDS = 2 * 24 * 60 * 60 * 1000;
 
     private boolean isNeedToShowNotification() {
         long lastOpened = getLastOpened();
         if (lastOpened != 0) {
-            if (Calendar.getInstance().getTimeInMillis() - lastOpened > MINUTES_IN_MILLISECONDS) {
+            if (Calendar.getInstance().getTimeInMillis() - lastOpened > DAYS_IN_MILLISECONDS) {
+                Log.e(TAG, "isNeedToShowNotification: true");
                 return true;
             }
         }
+        Log.e(TAG, "isNeedToShowNotification: false");
         return false;
     }
 

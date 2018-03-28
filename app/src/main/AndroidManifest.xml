@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.bvchopda.fragmentsdemo">
+    package="com.example.bvchopda.fragmentsdemo">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- This permissions are neccessary for broadcast receiver -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- This permissions are necessary for broadcast receiver -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="com.application.MyApplication"
@@ -19,9 +20,9 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- Broadcast receiver declaration in manifest file and make sure to enable it -->
@@ -31,15 +32,14 @@
             <intent-filter>
 
                 <!-- Intent filters for broadcast receiver -->
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
-                <action android:name="android.net.wifi.STATE_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
-        <activity android:name=".TestUndoPaintActivity">
-        </activity>
+        <activity android:name=".TestUndoPaintActivity" />
 
-        <!--Kotlin Activities-->
+        <!-- Kotlin Activities -->
         <activity android:name="com.kotlin.android.activities.KotlinActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -47,26 +47,35 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>-->
         </activity>
-        <activity android:name="com.kotlin.android.activities.OperationActivity"/>
+        <activity android:name="com.kotlin.android.activities.OperationActivity" />
 
-        <!--Training Stuff-->
+        <!-- Training Stuff -->
         <activity
             android:name="com.training.kotlin.KotlinTrainingActivity"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name="com.training.kotlin.part1.activities.Training1BasicActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name="com.training.kotlin.part1.activities.Training1BasicSolutionActivity"
-            android:exported="true"/>
-
+            android:exported="true" />
         <activity
             android:name="com.training.kotlin.part2.activities.Training2BasicActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name="com.training.kotlin.part2.activities.Training2BasicSolutionActivity"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <service android:name="com.services.FcmService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name="com.notification.Alarm">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

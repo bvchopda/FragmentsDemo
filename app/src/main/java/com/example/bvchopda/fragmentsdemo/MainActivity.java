@@ -2,6 +2,7 @@ package com.example.bvchopda.fragmentsdemo;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -23,18 +24,18 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 
 import com.fragments.EventBusFragment;
-import com.fragments.GalleryFragment;
 import com.fragments.ImportFragment;
 import com.fragments.SlideShowFragment;
-import com.fragments.ImportFragment;
 import com.fragments.ToolsFragment;
-import com.fragments.VectorFragment;
+import com.notification.NotificationManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+{
 
     HashMap<String, Fragment> fragmentHashMap;
     ArrayList<String> fragmentsList;
@@ -45,22 +46,81 @@ public class MainActivity extends AppCompatActivity
     View mainLayout;
     private float lastTranslate = 0.0f;
     private NavigationView navigationView;
+    private static final String TAG = "MainActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mainLayout = findViewById(R.id.mainLayout);
+
+        // If a notification message is tapped, any data accompanying the notification
+        // message is available in the intent extras. In this sample the launcher
+        // intent is fired when the notification is tapped, so any accompanying data would
+        // be handled here. If you want a different intent fired, set the click_action
+        // field of the notification message to the desired intent. The launcher intent
+        // is used when no click_action is specified.
+        //
+        // Handle possible data accompanying notification message.
+        // [START handle_data_extras]
+        if (getIntent().getExtras() != null && getIntent().getExtras().keySet().contains(NotificationManager.NotificationConstants.notificationId))
+        {
+            Map<String, String> data = new HashMap<>();
+            for (String key : getIntent().getExtras().keySet())
+            {
+                Object value = getIntent().getExtras().get(key);
+                data.put(key, String.valueOf(value));
+                Log.e(TAG, "Key: " + key + " Value: " + value);
+            }
+            NotificationManager.getInstance(this).handleExtras(data, true);
+            finish();
+        }
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        final Snackbar[] aSnackBar = new Snackbar[1];
+        final Snackbar[] bSnackBar = new Snackbar[1];
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view)
+            {
+                aSnackBar[0] = Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_INDEFINITE).setAction("Action", null);
+                aSnackBar[0].show();
+
+                bSnackBar[0] = Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_INDEFINITE).setAction("Action", null);
+                bSnackBar[0].show();
+
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if (aSnackBar[0] != null && aSnackBar[0].isShownOrQueued())
+                        {
+                            aSnackBar[0].dismiss();
+                            aSnackBar[0] = null;
+                        }
+                    }
+                }, 2000);
+
+                new Handler().postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if (bSnackBar[0] != null && bSnackBar[0].isShownOrQueued())
+                        {
+                            bSnackBar[0].dismiss();
+                            bSnackBar[0] = null;
+                        }
+                    }
+                }, 10000);
             }
         });
 
@@ -109,18 +169,18 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch (key) {
             case KEY_IMPORT:
-                /*fragment = fragmentHashMap.get(ImportFragment.class.getSimpleName());
+                fragment = fragmentHashMap.get(ImportFragment.class.getSimpleName());
                 if (fragment == null) {
                     fragment = new ImportFragment();
                     fragmentHashMap.put(ImportFragment.class.getSimpleName(), fragment);
                 }
-                fragmentsList.add(ImportFragment.class.getSimpleName());*/
-                fragment = fragmentHashMap.get(VectorFragment.class.getSimpleName());
+                fragmentsList.add(ImportFragment.class.getSimpleName());
+                /*fragment = fragmentHashMap.get(VectorFragment.class.getSimpleName());
                 if (fragment == null) {
                     fragment = new VectorFragment();
                     fragmentHashMap.put(VectorFragment.class.getSimpleName(), fragment);
                 }
-                fragmentsList.add(VectorFragment.class.getSimpleName());
+                fragmentsList.add(VectorFragment.class.getSimpleName());*/
                 break;
             case KEY_GALLERY:
                 /*fragment = fragmentHashMap.get(GalleryFragment.class.getSimpleName());

@@ -66,7 +66,7 @@ public class NotificationManager {
             String channelId = context.getString(R.string.default_notification_channel_id);
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(context, channelId)
+                    new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(context.getString(R.string.app_name))
                             .setContentText("Hey you haven't draw since long. Let's draw and " +
@@ -226,7 +226,7 @@ public class NotificationManager {
         String channelId = context.getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(context, channelId)
+                new NotificationCompat.Builder(context)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(title)
                         .setContentText(messageBody)
